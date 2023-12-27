@@ -5,18 +5,19 @@ import HomePage from './src/component/home_page';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View style={styles.Homecontainer}>
       <HomePage /> 
-      {/* <StatusBar style="dark" /> */}
+      <StatusBar style="dark" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-   
+  Homecontainer: {
+    flex:1,
     backgroundColor: '#fff',
-    paddingTop: 10,
+    
+    
     
   },
 });
