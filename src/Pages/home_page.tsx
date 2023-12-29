@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import ForecastItem from '../components/ForecastItem';
 
@@ -89,17 +89,39 @@ const HomePage = () => {
 
   // Render weather information when available
   return (
-    <View style={styles.container}>
-      <Text style={styles.location}>{weather.name}</Text>
-      <Text style={styles.temp}>{Math.round(weather.main.temp)}°C</Text>
+    <ImageBackground source={{ uri: 'https://img.freepik.com/free-photo/vertical-shot-road_181624-36978.jpg?size=626&ext=jpg&ga=GA1.2.2045870009.1703831812&semt=ais' }} style={styles.container}>
+      <View style={{
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0, 7)'
+      }}
+      />
+      <View style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Text style={styles.location}>{weather.name}</Text>
+        <Text style={styles.temp}>{Math.round(weather.main.temp)}°C</Text>
+      </View>
+
 
       <FlatList
         data={forecast}
+        showsHorizontalScrollIndicator={false}
         horizontal
-        renderItem={({ item }) => <ForecastItem forecast={item}/>}
-          
+        style={{
+          flexGrow: 0,
+          height: 180,
+          margin: 15,
+          marginBottom: 40,
+        }}
+        contentContainerStyle={{
+          gap: 10,
+          paddingHorizontal: 10,
+        }}
+        renderItem={({ item }) => <ForecastItem forecast={item} />}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -115,7 +137,7 @@ const styles = StyleSheet.create({
   },
   temp: {
     fontSize: 70,
-    color: 'gray'
+    color: 'white'
   },
 });
 
