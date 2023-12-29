@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import ForecastItem from '../components/ForecastItem';
+import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
@@ -19,7 +20,7 @@ type MainWeather = {
 };
 type Weather = {
   name: string;
-  main: MainWeather
+  main: MainWeather;
 };
 export type WeatherForecast = {
   main: MainWeather;

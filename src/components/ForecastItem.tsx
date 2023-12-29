@@ -19,17 +19,20 @@ const styles = StyleSheet.create({
         aspectRatio: 9 / 16,
         borderRadius: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        
     },
     temp: {
-        fontSize: 20,
+        fontSize: 25,
         color: 'gray',
-        marginVertical: 10,
+        // fontFamily: 'Poppins_400Regular',
+        
 
     },
     date: {
         color: 'gray',
         fontSize: 16,
+        // fontFamily: 'Poppins_400Regular',
     }
 })
 
