@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native'; 
-import HomePage from './src/component/home_page'; 
+import HomePage from './src/Pages/home_page'; 
 
 export default function App() {
   return (

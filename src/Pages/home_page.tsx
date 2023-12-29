@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 import * as Location from 'expo-location';
+import ForecastItem from '../components/ForecastItem';
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
@@ -20,7 +21,7 @@ type Weather = {
   name: string;
   main: MainWeather
 };
-type WeatherForecast = {
+export type WeatherForecast = {
   main: MainWeather;
   dt: number;
 }
@@ -30,7 +31,7 @@ const HomePage = () => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState('');
   const [weather, setWeather] = useState<Weather>();
-  const [forecast, setForecast] = useState<Weather[]>();
+  const [forecast, setForecast] = useState<WeatherForecast[]>();
   // Fetch weather and forecast data on location change
   useEffect(() => {
     if (location) {
@@ -95,10 +96,8 @@ const HomePage = () => {
       <FlatList
         data={forecast}
         horizontal
-        renderItem={({ item }) =>
-          <View>
-            <Text>{item.main.temp}</Text>
-          </View>}
+        renderItem={({ item }) => <ForecastItem forecast={item}/>}
+          
       />
     </View>
   );
