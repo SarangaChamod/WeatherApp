@@ -1,44 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 import * as Location from 'expo-location';
 
-const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
+const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
-console.warn(API_KEY);
 
-
+// Define the structure of weather data
+type MainWeather = {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  pressure: number;
+  humidity: number;
+  sea_level: number;
+  grnd_level: number;
+};
 type Weather = {
   name: string;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-    sea_level: number;
-    grnd_level: number;
-  };
+  main: MainWeather
+};
+type WeatherForecast = {
+  main: MainWeather;
+  dt: number;
 }
-const HomePage = () => {
 
+const HomePage = () => {
+  // State variables for location, error message, and weather data
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState('');
-  const [weatehr, setWeather] = useState<Weather>();
-
-
+  const [weather, setWeather] = useState<Weather>();
+  const [forecast, setForecast] = useState<Weather[]>();
+  // Fetch weather and forecast data on location change
   useEffect(() => {
     if (location) {
       fetchWeather();
-    }
-
+      fetchForecast();
+    };
   }, [location]);
 
-
-  // Request Location premission form mobile phone
+  // Request Location permission from the mobile phone
   useEffect(() => {
     (async () => {
-
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -46,40 +49,57 @@ const HomePage = () => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log('Location:', location);
       setLocation(location);
     })();
   }, []);
 
-
-  // set location using hard coding
+  // Fetch current weather based on location
   const fetchWeather = async () => {
-
     if (!location) {
       return;
-    }
+    };
 
     const lat = location.coords.latitude;
     const lon = location.coords.longitude;
     const results = await fetch(
-      `${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+      `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
     );
     const data = await results.json();
-    console.log(JSON.stringify(data, null, 2));
     setWeather(data);
   };
 
-  if (!weatehr) {
+  // Fetch weather forecast based on location
+  const fetchForecast = async () => {
+    if (!location) {
+      return;
+    };
+    const results = await fetch(
+      `${BASE_URL}/forecast?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&units=metric`
+    );
+    const data = await results.json();
+    console.log(JSON.stringify(data, null, 2)); // Log forecast data
+    setForecast(data.list);
+  };
+
+  // Show loading indicator while weather data is being fetched
+  if (!weather) {
     return <ActivityIndicator />
   };
 
-
+  // Render weather information when available
   return (
-
     <View style={styles.container}>
-      <Text style={styles.location}>{weatehr.name}</Text>
-      <Text style={styles.temp}>{Math.round(weatehr.main.temp)}°C</Text>
+      <Text style={styles.location}>{weather.name}</Text>
+      <Text style={styles.temp}>{Math.round(weather.main.temp)}°C</Text>
 
+      <FlatList
+        data={forecast}
+        horizontal
+        renderItem={({ item }) =>
+          <View>
+            <Text>{item.main.temp}</Text>
+          </View>}
+      />
     </View>
   );
 };
@@ -98,6 +118,6 @@ const styles = StyleSheet.create({
     fontSize: 70,
     color: 'gray'
   },
-})
+});
 
 export default HomePage;
