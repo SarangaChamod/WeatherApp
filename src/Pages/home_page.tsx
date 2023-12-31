@@ -93,7 +93,7 @@ const HomePage = () => {
     <ImageBackground source={{ uri: 'https://img.freepik.com/free-photo/vertical-shot-road_181624-36978.jpg?size=626&ext=jpg&ga=GA1.2.2045870009.1703831812&semt=ais' }} style={styles.container}>
       <View style={{
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0, 7)'
+        backgroundColor: 'rgba(0, 0, 0, 0.2)'
       }}
       />
       <View style={{
@@ -112,8 +112,8 @@ const HomePage = () => {
         horizontal
         style={{
           flexGrow: 0,
-          height: 180,
-          margin: 15,
+          height: 200,
+          margin: 10,
           marginBottom: 40,
         }}
         contentContainerStyle={{
@@ -134,11 +134,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   location: {
-    fontSize: 35,
+    fontSize: 30,
+    color: 'white',
   },
   temp: {
-    fontSize: 70,
-    color: 'white'
+    fontSize: 120,
+    color: 'white',
+    fontWeight:'bold'
   },
 });
 
